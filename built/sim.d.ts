@@ -98,6 +98,9 @@ declare namespace pxsim {
         button7: HTMLInputElement;
         contentDiv: HTMLDivElement;
         levelMatrix: any;
+        bgm: Phaser.Sound;
+        hitWall: Phaser.Sound;
+        winStage: Phaser.Sound;
         constructor();
         initAsync(msg: pxsim.SimulatorRunMessage): Promise<void>;
         preload(): void;

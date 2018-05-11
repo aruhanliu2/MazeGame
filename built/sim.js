@@ -180,6 +180,9 @@ var pxsim;
             this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             this.game.load.spritesheet("robot", "assets/images/EyeRobot.png", 64, 64, 16);
             this.game.load.image("tiles", "assets/images/tiles.png");
+            this.game.load.audio('bgm', 'assets/sounds/Old-World-Vanishing.mp3');
+            this.game.load.audio('hitWall', 'assets/sounds/bump.mp3');
+            this.game.load.audio('win', 'assets/sounds/win.mp3');
             // Load in all maps that we have
             this.levelCount = 7;
             this.highestLevelReached = 0;
@@ -198,6 +201,9 @@ var pxsim;
                 console.log("I'm here");
                 this.reset();
             }
+            // this.reset();
+            this.bgm = this.game.add.audio('bgm');
+            this.bgm.play();
             // Setup game physics
             this.game.physics.startSystem(Phaser.Physics.ARCADE);
             this.game.world.enableBody = true;
@@ -583,7 +589,8 @@ var pxsim;
                         this.robot.animations.play("faceLeft");
                         // Checks for collision between robot and layer.
                         // This is needed for the collision callback to work.
-                        this.game.physics.arcade.collide(this.robot, this.layer);
+                        this.game.physics.arcade.collide(this.robot, this.layer, this);
+                        //          				this.game.physics.arcade.overlap(this.robot, this.layer, this.winMusic());
                     }, this);
                 }
                 else if (this.actionLog[level][i] == "moveRight") {
@@ -595,7 +602,8 @@ var pxsim;
                         this.robot.animations.play("faceRight");
                         // Checks for collision between robot and layer.
                         // This is needed for the collision callback to work.
-                        this.game.physics.arcade.collide(this.robot, this.layer);
+                        this.game.physics.arcade.collide(this.robot, this.layer, this);
+                        //          				this.game.physics.arcade.overlap(this.robot, this.layer, this.winMusic());
                     }, this);
                 }
                 else if (this.actionLog[level][i] == "moveUp") {
@@ -607,7 +615,8 @@ var pxsim;
                         this.robot.animations.play("faceUp");
                         // Checks for collision between robot and layer.
                         // This is needed for the collision callback to work.
-                        this.game.physics.arcade.collide(this.robot, this.layer);
+                        this.game.physics.arcade.collide(this.robot, this.layer, this);
+                        //          				this.game.physics.arcade.overlap(this.robot, this.layer, this.winMusic());
                     }, this);
                 }
                 else if (this.actionLog[level][i] == "moveDown") {
@@ -619,7 +628,8 @@ var pxsim;
                         this.robot.animations.play("faceDown");
                         // Checks for collision between robot and layer.
                         // This is needed for the collision callback to work.
-                        this.game.physics.arcade.collide(this.robot, this.layer);
+                        this.game.physics.arcade.collide(this.robot, this.layer, this);
+                        //          				this.game.physics.arcade.overlap(this.robot, this.layer, this.winMusic());
                     }, this);
                 }
                 this.tweenChain.push(currTween);
@@ -891,6 +901,18 @@ var pxsim;
             result.push("moveForward");
             return result;
         };
+        // 	collideMusic(){
+        //         if (this.map[level].getTile(this.robotX, this.robotY, this.map[level].getLayer()).index != 3) {
+        //             this.hitWall = this.game.add.audio('hitWall');
+        //             this.hitWall.play();
+        //            }
+        //      }
+        //      winMusic(){
+        //         
+        //         this.winStage = this.game.add.audio('win');
+        //         this.winStage.play();
+        //         
+        //      }
         Board.prototype.BFS = function (level) {
             var N = 11, M = 7;
             var new_node = [];
